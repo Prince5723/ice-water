@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ice and Water | Multiplayer Arena</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+</head>
+
+<body>
+
+<div id="app">
+
+    <div class="bg-glow ice"></div>
+    <div class="bg-glow water"></div>
+
+    <header class="app-header glass">
+        <div class="logo">
+            Ice <span class="accent">&</span> Water
+        </div>
+        <div id="connection-status" class="status-badge disconnected">
+            Disconnected
+        </div>
+    </header>
+
+    <div id="toast-container"></div>
+
+    <!-- ================= LOBBY ================= -->
+    <section id="screen-lobby" class="screen active">
+        <div class="lobby-container glass">
+
+            <div class="welcome-card">
+                <h1>Enter Arena</h1>
+                <p class="subtitle">Real-time tactical multiplayer combat.</p>
+
+                <div class="input-group">
+                    <label>Username</label>
+                    <input type="text" id="username-input" placeholder="Player name" maxlength="12">
+                </div>
+
+                <div class="input-group">
+                    <label>Players Per Team (1-10)</label>
+                    <input type="number" id="players-per-team-input" placeholder="2" min="1" max="10" value="2">
+                </div>
+
+                <div class="action-row">
+                    <input type="text" id="new-room-name" placeholder="Room name">
+                    <button id="btn-create-room" class="btn primary">Create</button>
+                </div>
+            </div>
+
+            <div class="room-list-container">
+                <h3>Live Rooms</h3>
+                <div id="room-list" class="room-grid">
+                    <div class="empty-state">Scanning...</div>
+                </div>
+                <button id="btn-refresh-rooms" class="btn ghost">Refresh</button>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ================= WAITING ================= -->
+    <section id="screen-waiting" class="screen">
+        <div class="waiting-card glass">
+            <h2>Room</h2>
+            <h1 id="wait-room-name">---</h1>
+
+            <div class="loader-ring"></div>
+            <p id="wait-message">Waiting for players...</p>
+
+            <div class="team-indicators">
+                <div class="team-badge team-a">Ice</div>
+                <div class="vs">VS</div>
+                <div class="team-badge team-b">Water</div>
+            </div>
+
+            <button id="btn-ready" class="btn primary large">
+                Ready
+            </button>
+        </div>
+    </section>
+
+    <!-- ================= GAME ================= -->
+    <section id="screen-game" class="screen">
+        <div class="hud glass">
+
+            <div class="score team-a">
+                ICE <span id="score-a">0</span>
+                <small><span id="players-a">0</span> alive</small>
+            </div>
+
+            <div class="center-hud">
+                <div id="match-timer">00:00</div>
+                <div id="raid-bar-container">
+                    <div id="raid-bar"></div>
+                </div>
+                <div id="game-status-text" class="status-text">Warmup</div>
+            </div>
+
+            <div class="score team-b">
+                WATER <span id="score-b">0</span>
+                <small><span id="players-b">0</span> alive</small>
+            </div>
+
+        </div>
+
+        <div class="canvas-shell">
+            <canvas id="game-canvas" width="800" height="600"></canvas>
+
+            <div id="canvas-overlay" class="hidden">
+                <h1 id="overlay-text">RAID</h1>
+            </div>
+        </div>
+
+        <div class="controls-hint">
+            Move with <b>WASD</b> or <b>Arrow Keys</b>
+        </div>
+    </section>
+
+    <!-- ================= RESULT ================= -->
+    <section id="screen-result" class="screen">
+        <div class="result-card glass">
+            <h1 id="winner-text">WINNER</h1>
+            <p id="end-reason">---</p>
+
+            <div class="final-scores">
+                <div class="fs-box ice">
+                    <span>Ice</span>
+                    <h2 id="final-score-a">0</h2>
+                </div>
+                <div class="fs-box water">
+                    <span>Water</span>
+                    <h2 id="final-score-b">0</h2>
+                </div>
+            </div>
+
+            <button id="btn-play-again" class="btn primary" style="margin-top:12px;">
+                Play Again
+            </button>
+            <button id="btn-lobby-return" class="btn ghost">
+                Back to Lobby
+            </button>
+        </div>
+    </section>
+
+</div>
+
+<script src="game.js"></script>
+</body>
+</html>
+
+
